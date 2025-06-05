@@ -1,0 +1,33 @@
+name: Daily Recommend Update
+
+on:
+  schedule:
+    - cron: '0 6 * * *' # 每天 UTC+6
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Install dependencies
+      run: npm install axios
+
+    - name: Run Recommendation Script
+      run: node generate_recommend.js
+
+    - name: Commit and Push
+      run: |
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
+        git add api/recommend.js
+        git commit -m "每日自動更新推薦幣種"
+        git push
