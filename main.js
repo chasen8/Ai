@@ -1,3 +1,11 @@
+// ===== 分頁切換功能 =====
+
+function showTab(tabId) {
+  const sections = document.querySelectorAll(".tab-content");
+  sections.forEach(s => s.style.display = "none");
+  document.getElementById(tabId).style.display = "block";
+}
+
 // ===== 幣種即時分析功能 =====
 
 async function analyze() {
@@ -143,7 +151,7 @@ async function fetchRecommendations() {
       `<li><b>${rec.symbol}</b> → ${rec.comment}</li>`
     ).join('');
   } catch (e) {
-    document.getElementById('recommend-list').innerHTML = '<li>⚠️ 無法取得推薦資料，請確認 /api/recommend.js 是否存在。</li>';
+    document.getElementById('recommend-list').innerHTML = '<li>⚠️ 無法取得推薦資料</li>';
   }
 }
 
@@ -164,7 +172,7 @@ async function fetchStrategy() {
       </li><br>`
     ).join('');
   } catch (e) {
-    document.getElementById('strategy-list').innerHTML = '<li>⚠️ 無法取得策略資料，請確認 /api/strategy.js 是否存在。</li>';
+    document.getElementById('strategy-list').innerHTML = '<li>⚠️ 無法取得策略資料</li>';
   }
 }
 
