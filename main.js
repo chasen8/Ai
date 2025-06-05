@@ -1,4 +1,5 @@
 // ===== 幣種即時分析功能 =====
+
 async function analyze() {
   const symbolInput = document.getElementById("symbol").value.trim();
   const intervalInput = document.getElementById("interval").value;
@@ -90,7 +91,6 @@ Vegas 通道：${vegasTrend}<br>
   }
 }
 
-
 // ===== EMA 計算器 =====
 
 function calculateEMA(prices, period) {
@@ -139,9 +139,11 @@ async function fetchRecommendations() {
     const res = await fetch('/api/recommend.js');
     const list = await res.json();
     const ul = document.getElementById('recommend-list');
-    ul.innerHTML = list.map(rec => `<li><b>${rec.symbol}</b> → ${rec.comment}</li>`).join('');
-  } catch {
-    document.getElementById('recommend-list').innerHTML = '<li>⚠️ 無法取得推薦資料</li>';
+    ul.innerHTML = list.map(rec =>
+      `<li><b>${rec.symbol}</b> → ${rec.comment}</li>`
+    ).join('');
+  } catch (e) {
+    document.getElementById('recommend-list').innerHTML = '<li>⚠️ 無法取得推薦資料，請確認 /api/recommend.js 是否存在。</li>';
   }
 }
 
@@ -161,8 +163,8 @@ async function fetchStrategy() {
         ▸ 理由：${s.reason}
       </li><br>`
     ).join('');
-  } catch {
-    document.getElementById('strategy-list').innerHTML = '<li>⚠️ 無法取得策略資料</li>';
+  } catch (e) {
+    document.getElementById('strategy-list').innerHTML = '<li>⚠️ 無法取得策略資料，請確認 /api/strategy.js 是否存在。</li>';
   }
 }
 
