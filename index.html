@@ -1,21 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-TW">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Huabot - AI 點位分析</title>
+  <title>Huabot - AI 幣種分析</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Huabot 🧠</h1>
-  <p>輸入幣種與週期，AI 幫你找最佳進場點</p>
+  <section id="top-picks">
+    <h2>💎 今日 AI 推薦幣種</h2>
+    <ul id="recommend-list"><li>載入中...</li></ul>
+  </section>
+
+  <hr />
+
+  <h2>🧠 幣種即時分析</h2>
   <input id="symbol" placeholder="例如：BTC-USDT" />
   <select id="interval">
-    <option value="1h">1H</option>
-    <option value="4h">4H</option>
+    <option value="1H">1H</option>
+    <option value="4H">4H</option>
   </select>
   <button onclick="analyze()">分析</button>
-  <pre id="result">請輸入後點選分析</pre>
+
+  <pre id="result">請輸入幣種並點選分析</pre>
+
   <script src="main.js"></script>
 </body>
 </html>
