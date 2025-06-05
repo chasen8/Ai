@@ -12,11 +12,12 @@
   <nav>
     <ul class="navbar">
       <li><a href="#analysis">即時幣種分析</a></li>
-      <li><a href="#recommendations">幣種推薦（多空）</a></li>
+      <li><a href="#recommendations">幣種推薦</a></li>
+      <li><a href="#strategy">合約操作建議</a></li>
     </ul>
   </nav>
 
-  <!-- ✅ 分析區 -->
+  <!-- 🧠 即時分析區 -->
   <section id="analysis">
     <h2>🧠 幣種即時分析</h2>
     <input id="symbol" placeholder="例如：BTC-USDT" />
@@ -29,17 +30,27 @@
     <pre id="result">請輸入幣種並點選分析</pre>
   </section>
 
-  <!-- ✅ 推薦區 -->
+  <!-- 💎 推薦幣種區 -->
   <section id="recommendations" style="margin-top: 30px;">
-  <details>
-    <summary style="font-size: 20px; color: orange;">💎 今日 AI 推薦幣種</summary>
-    <ul id="recommend-list" style="margin-top: 12px;">
-      <li>載入中...</li>
-    </ul>
-  </details>
-</section>
+    <details>
+      <summary style="font-size: 20px; color: orange;">💎 今日 AI 推薦幣種</summary>
+      <ul id="recommend-list" style="margin-top: 12px;">
+        <li>載入中...</li>
+      </ul>
+    </details>
+  </section>
 
+  <!-- 📌 合約操作建議區 -->
+  <section id="strategy" style="margin-top: 30px;">
+    <details>
+      <summary style="font-size: 20px; color: orange;">📌 合約操作建議（AI 每日生成）</summary>
+      <ul id="strategy-list" style="margin-top: 12px;">
+        <li>載入中...</li>
+      </ul>
+    </details>
+  </section>
 
+  <!-- 主腳本 -->
   <script src="main.js"></script>
 </body>
 </html>
