@@ -1,3 +1,5 @@
+// ===== 幣種即時分析功能 =====
+
 async function analyze() {
   const symbolInput = document.getElementById("symbol").value.trim();
   const intervalInput = document.getElementById("interval").value;
@@ -78,6 +80,8 @@ Vegas 通道：${vegasTrend}
   }
 }
 
+// ===== EMA 計算器 =====
+
 function calculateEMA(prices, period) {
   const k = 2 / (period + 1);
   let ema = prices.slice(0, period).reduce((a, b) => a + b) / period;
@@ -88,6 +92,8 @@ function calculateEMA(prices, period) {
   }
   return emaArray;
 }
+
+// ===== 籌碼密集區計算 =====
 
 function calcVolumeProfile(prices) {
   const bins = {};
@@ -115,7 +121,8 @@ function calcVolumeProfile(prices) {
   return { poc, vah, val };
 }
 
-// 🔄 推薦幣種讀取
+// ===== 載入推薦幣種 =====
+
 async function fetchRecommendations() {
   try {
     const res = await fetch('/api/recommend.js');
@@ -127,6 +134,30 @@ async function fetchRecommendations() {
   }
 }
 
+// ===== 載入每日操作建議 =====
+
+async function fetchStrategy() {
+  try {
+    const res = await fetch('/api/strategy.js');
+    const list = await res.json();
+    const ul = document.getElementById('strategy-list');
+    ul.innerHTML = list.map(s =>
+      `<li>
+        <b>${s.symbol}</b>（${s.trend}）<br>
+        ▸ 進場：${s.entry}<br>
+        ▸ TP：${s.tp}<br>
+        ▸ SL：${s.sl}<br>
+        ▸ 理由：${s.reason}
+      </li><br>`
+    ).join('');
+  } catch {
+    document.getElementById('strategy-list').innerHTML = '<li>⚠️ 無法取得策略資料</li>';
+  }
+}
+
+// ===== 初始化載入 =====
+
 window.onload = () => {
   fetchRecommendations();
+  fetchStrategy();
 };
