@@ -1,0 +1,32 @@
+name: Update Daily Strategy
+
+on:
+  schedule:
+    - cron: '0 2 * * *'  # 每天台灣時間 10:00 執行
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install axios
+
+      - name: Run strategy generator
+        run: node strategyGenerator.js
+
+      - name: Commit and Push
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add api/strategy.js
+          git commit -m "🔁 update strategy"
+          git push
