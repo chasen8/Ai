@@ -23,13 +23,10 @@ async function analyze() {
     }
 
     const closes = data.map(k => parseFloat(k[4]));
-
-    // === RSI 指標 ===
     const recent = closes.slice(-14);
     const avg = recent.reduce((a, b) => a + b, 0) / recent.length;
     const rsi = Math.round((Math.max(...recent) / avg) * 50);
 
-    // === MACD ===
     const ema12 = calculateEMA(closes, 12);
     const ema26 = calculateEMA(closes, 26);
     const macdLine = ema12.slice(-ema26.length).map((val, i) => val - ema26[i]);
@@ -37,24 +34,21 @@ async function analyze() {
     const macdHist = macdLine.slice(-signalLine.length).map((val, i) => val - signalLine[i]);
     const macdTrend = macdHist.at(-1) > 0 ? "柱體翻紅，動能偏強" : "柱體翻綠，動能轉弱";
 
-    // === Vegas通道 ===
-    const vegasShort = calculateEMA(closes, 21);
-    const vegasLong = calculateEMA(closes, 55);
+    const vegasShort = calculateEMA(closes, 21).pop();
+    const vegasLong = calculateEMA(closes, 55).pop();
     const priceNow = closes.at(-1);
     const vegasTrend =
-      priceNow > vegasShort.at(-1) && priceNow > vegasLong.at(-1)
+      priceNow > vegasShort && priceNow > vegasLong
         ? "上升趨勢（價格在通道上方）"
-        : priceNow < vegasShort.at(-1)
+        : priceNow < vegasShort
         ? "下降趨勢（價格跌破短期通道）"
         : "橫盤震盪（靠近通道中段）";
 
-    // === 籌碼密集區 ===
     const vp = calcVolumeProfile(closes);
     const poc = vp.poc;
     const vah = vp.vah;
     const val = vp.val;
 
-    // === 趨勢分類與建議 ===
     let trend = "震盪";
     if (rsi > 60 && macdHist.at(-1) > 0) trend = "偏多";
     else if (rsi < 40 && macdHist.at(-1) < 0) trend = "偏空";
@@ -63,7 +57,6 @@ async function analyze() {
     if (trend === "偏多") suggestion = `可等待價格回踩 ${val}～${poc} 區間，考慮短多`;
     if (trend === "偏空") suggestion = `若跌破 ${val}，可考慮短空，留意 ${vah} 壓力`;
 
-    // === 輸出文字 ===
     result.textContent = `
 🧠 AI 智能分析結果（合約）
 
@@ -85,14 +78,12 @@ Vegas 通道：${vegasTrend}
   }
 }
 
-// === 工具函數區 ===
-
 function calculateEMA(prices, period) {
   const k = 2 / (period + 1);
-  const emaArray = [];
-  emaArray[0] = prices.slice(0, period).reduce((a, b) => a + b) / period;
+  let ema = prices.slice(0, period).reduce((a, b) => a + b) / period;
+  const emaArray = [ema];
   for (let i = period; i < prices.length; i++) {
-    const ema = prices[i] * k + emaArray[emaArray.length - 1] * (1 - k);
+    ema = prices[i] * k + ema * (1 - k);
     emaArray.push(ema);
   }
   return emaArray;
@@ -124,17 +115,18 @@ function calcVolumeProfile(prices) {
   return { poc, vah, val };
 }
 
-async function fetchRecommend() {
-  const ul = document.getElementById("recommend-list");
+// 🔄 推薦幣種讀取
+async function fetchRecommendations() {
   try {
-    const res = await fetch("/api/recommend");
+    const res = await fetch('/api/recommend.js');
     const list = await res.json();
-    ul.innerHTML = list.map(
-      coin => `<li><b>${coin.symbol}</b> → ${coin.comment}</li>`
-    ).join("");
-  } catch (e) {
-    ul.innerHTML = "<li>⚠️ 無法取得推薦幣清單</li>";
+    const ul = document.getElementById('recommend-list');
+    ul.innerHTML = list.map(rec => `<li><b>${rec.symbol}</b> → ${rec.comment}</li>`).join('');
+  } catch {
+    document.getElementById('recommend-list').innerHTML = '<li>⚠️ 無法取得推薦資料</li>';
   }
 }
 
-window.onload = fetchRecommend;
+window.onload = () => {
+  fetchRecommendations();
+};
