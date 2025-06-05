@@ -9,13 +9,13 @@
 <body>
   <nav>
     <ul class="navbar">
-      <li><a href="#analysis">即時幣種分析</a></li>
-      <li><a href="#recommend">幣種推薦</a></li>
-      <li><a href="#strategy">合約操作建議</a></li>
+      <li><button onclick="showTab('analysis')">即時幣種分析</button></li>
+      <li><button onclick="showTab('recommend')">幣種推薦</button></li>
+      <li><button onclick="showTab('strategy')">合約操作建議</button></li>
     </ul>
   </nav>
 
-  <section id="analysis">
+  <section id="analysis" class="tab-content">
     <h2>🧠 幣種即時分析</h2>
     <input id="symbol" placeholder="例如：BTC-USDT" />
     <select id="interval">
@@ -27,18 +27,14 @@
     <pre id="result">請輸入幣種並點選分析</pre>
   </section>
 
-  <section id="recommend">
+  <section id="recommend" class="tab-content" style="display:none;">
     <h2>💎 今日 AI 推薦幣種</h2>
-    <ul id="recommend-list">
-      <li>載入中...</li>
-    </ul>
+    <ul id="recommend-list"><li>載入中...</li></ul>
   </section>
 
-  <section id="strategy">
+  <section id="strategy" class="tab-content" style="display:none;">
     <h2>📌 合約操作建議（AI 每日生成）</h2>
-    <ul id="strategy-list">
-      <li>載入中...</li>
-    </ul>
+    <ul id="strategy-list"><li>載入中...</li></ul>
   </section>
 
   <script src="main.js"></script>
