@@ -1,5 +1,4 @@
 // ===== 幣種即時分析功能 =====
-
 async function analyze() {
   const symbolInput = document.getElementById("symbol").value.trim();
   const intervalInput = document.getElementById("interval").value;
@@ -59,26 +58,38 @@ async function analyze() {
     if (trend === "偏多") suggestion = `可等待價格回踩 ${val}～${poc} 區間，考慮短多`;
     if (trend === "偏空") suggestion = `若跌破 ${val}，可考慮短空，留意 ${vah} 壓力`;
 
-    result.textContent = `
-🧠 AI 智能分析結果（合約）
+    // 🧠 智能 TP / SL 推論
+    let tp = "-", sl = "-";
+    if (trend === "偏多") {
+      tp = Math.max(vah, priceNow * 1.01).toFixed(2);
+      sl = Math.min(poc, val).toFixed(2);
+    } else if (trend === "偏空") {
+      tp = Math.min(val, priceNow * 0.99).toFixed(2);
+      sl = Math.max(poc, vah).toFixed(2);
+    }
 
-幣種：${symbolInput.toUpperCase()}
-週期：${intervalInput}
-趨勢分類：${trend}
-RSI：約 ${rsi}
-MACD：${macdTrend}
-Vegas 通道：${vegasTrend}
-籌碼密集區：
- - VAL（下緣）：${val}
- - POC（高交易密集）：${poc}
- - VAH（上緣）：${vah}
-
-📌 建議：${suggestion}
-    `.trim();
+    result.innerHTML = `
+<span style="color:#58a6ff;">🧠 AI 智能分析結果（合約）</span><br><br>
+幣種：<b>${symbolInput.toUpperCase()}</b><br>
+週期：${intervalInput}<br>
+趨勢分類：<b>${trend}</b><br>
+RSI：約 <b>${rsi}</b><br>
+MACD：${macdTrend}<br>
+Vegas 通道：${vegasTrend}<br>
+籌碼密集區：<br>
+ &nbsp;&nbsp;• VAL（下緣）：${val}<br>
+ &nbsp;&nbsp;• POC（高交易密集）：${poc}<br>
+ &nbsp;&nbsp;• VAH（上緣）：${vah}<br><br>
+📈 建議進場價格：約 <b>${priceNow}</b><br>
+🎯 TP（止盈）：<b>${tp}</b><br>
+🛡 SL（停損）：<b>${sl}</b><br><br>
+📌 <span style="color:orange;"><b>建議</b></span>：${suggestion}
+    `;
   } catch (err) {
     result.textContent = "❌ 分析錯誤，請稍後再試";
   }
 }
+
 
 // ===== EMA 計算器 =====
 
