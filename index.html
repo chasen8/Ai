@@ -8,34 +8,33 @@
 </head>
 <body>
 
-  <!-- 🔶 頁首導覽列 -->
+  <!-- 🔶 導覽列 -->
   <nav>
-    <ul style="display:flex; list-style:none; gap:20px; background:#000; padding:10px;">
-      <li><a href="#analysis" style="color:orange;">即時幣種分析</a></li>
-      <li><a href="#recommendations" style="color:orange;">幣種推薦（多空）</a></li>
+    <ul class="navbar">
+      <li><a href="#analysis">即時幣種分析</a></li>
+      <li><a href="#recommendations">幣種推薦（多空）</a></li>
     </ul>
   </nav>
 
-  <!-- ✅ 區塊一：即時分析 -->
-  <section id="analysis" style="margin-top: 20px;">
+  <!-- ✅ 分析區 -->
+  <section id="analysis">
     <h2>🧠 幣種即時分析</h2>
     <input id="symbol" placeholder="例如：BTC-USDT" />
     <select id="interval">
       <option value="1H">1H</option>
-      <option value="4H">4H</option>
+      <option value="4H" selected>4H</option>
       <option value="1D">1D</option>
     </select>
     <button onclick="analyze()">分析</button>
     <pre id="result">請輸入幣種並點選分析</pre>
   </section>
 
-  <!-- ✅ 區塊二：推薦幣種 -->
-  <section id="recommendations" style="margin-top: 40px;">
+  <!-- ✅ 推薦區 -->
+  <section id="recommendations">
     <h2>💎 今日 AI 推薦幣種</h2>
     <ul id="recommend-list"><li>載入中...</li></ul>
   </section>
 
-  <!-- ⬇️ JS -->
   <script src="main.js"></script>
 </body>
 </html>
